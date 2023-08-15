@@ -2,14 +2,13 @@
 
 {% block content %}
 
-<h1> Hello World! </h1>
-<br/>
-Air Quality: {{ json_data.0.AQI }} <! -- this is a tag to link the dictionary in views.home to the html to be displayed. the 0 is index into our json response dictionary and the  AQI is the key in dict -->
-<br/>
-<br/>
-Area: {{ json_data.0.ReportingArea }}
-<br/>
-<br/>
-Category: {{ json_data.0.Category.Name }}
+{% if json_data is None %}
+    There was an issue with api get request: {{ error }}
+{% else %}
+    <h1> Weather Stats </h1> <br/>
+    <b> Air Quality: </b> {{ json_data.0.AQI }} <br/> <! -- this is a tag to link the dictionary in views.home to the html to be displayed. the 0 is index into our json response dictionary and the  AQI is the key in dict -->
+    <b> Area: </b> {{ json_data.0.ReportingArea }} <br/>
+    <b> Category: </b> {{ json_data.0.Category.Name }} <br/>
+{% endif %}
 
 {% endblock %}
