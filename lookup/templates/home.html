@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if json_data is None %}
+        There was an issue with api get request: {{ error }}
 
-{% if json_data is None %}
-    There was an issue with api get request: {{ error }}
-{% else %}
-    <h1> Weather Stats </h1> <br/>
+    {% else %}
+        <h1> Weather Stats </h1> <br/>
+        <div class="card good" style="width: 50rem;">
+            <div class="card-body">
+            <h5 class="card-title">{{ json_data.0.Category.Name }}</h5>
+            <p class="card-text"><b>{{ json_data.0.ReportingArea }}  Air Quality: </b> {{ json_data.0.AQI }} </p>
+            <hr/>
+            <p>{{category_description}}</p>
+            </div>
+        </div>
+    {% endif %}
+    <br/>
     <b> Air Quality: </b> {{ json_data.0.AQI }} <br/> <! -- this is a tag to link the dictionary in views.home to the html to be displayed. the 0 is index into our json response dictionary and the  AQI is the key in dict -->
     <b> Area: </b> {{ json_data.0.ReportingArea }} <br/>
     <b> Category: </b> {{ json_data.0.Category.Name }} <br/>
-{% endif %}
-
 {% endblock %}
