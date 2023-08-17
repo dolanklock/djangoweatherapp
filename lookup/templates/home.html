@@ -2,24 +2,21 @@
 
 {% block content %}
 
-    {% if zipcode %}
-        {{zipcode}}
+    {% if json_data is None %}
+        There was an issue with api get request: {{ error }}
     {% else %}
-        {% if json_data is None %}
-            There was an issue with api get request: {{ error }}
-        {% else %}
-            <h1> Weather Stats </h1> <br/>
-            <div class="card {{category_color}}" style="width: 50rem;">
-                <div class="card-body">
-                <h5 class="card-title">{{ json_data.0.Category.Name }}</h5>
-                <p class="card-text"><b>{{ json_data.0.ReportingArea }}  Air Quality: </b> {{ json_data.0.AQI }} </p>
-                <hr/>
-                <p>{{category_description}}</p>
-                </div>
+        <h1> Weather Stats </h1> <br/>
+        <div class="card {{category_color}}" style="width: 50rem;">
+            <div class="card-body">
+            <h5 class="card-title">{{ json_data.0.Category.Name }}</h5>
+            <p class="card-text"><b>{{ json_data.0.ReportingArea }}  Air Quality: </b> {{ json_data.0.AQI }} </p>
+            <hr/>
+            <p>{{category_description}}</p>
             </div>
-        {% endif %}
-        <br/>
+        </div>
     {% endif %}
+    <br/>
+    
 
 {% endblock %}
 

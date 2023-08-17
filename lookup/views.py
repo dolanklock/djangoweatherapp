@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from . import constants
 
+# TODO: handle exception raised when search is empty
 def main_render(request, zipcode: str):
     import json
     import requests
     try:
         response = requests.get(f"https://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode={zipcode}&distance=25&API_KEY=66ED8617-4D66-4168-BAB7-371422904ACB")
         json_data = response.json()
+        if len(json_data) == 0:
+            return render(request, 'home.html', {"error": "Enter a valid zipcode"})
     except Exception as ex:
         error = f"{ex}"
         json_data =  None
@@ -27,8 +30,8 @@ def main_render(request, zipcode: str):
                                             })
 
 def home(request):
-    if request.method == "POST":  # checking if request is a POST request
-        zipcode = request.POST["zipcode"]  # getting the value from 'name' attirbute from base html
+    if request.method == "POST":  # checking if request is a POST request. (base html file in form has "method=POST")
+        zipcode = request.POST["zipcode"]  # getting the value from 'name' attirbute from base html forms element
         return main_render(request=request, zipcode=zipcode)  # has to return the HTTPS response
     
     else:
